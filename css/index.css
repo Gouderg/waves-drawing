@@ -1,0 +1,39 @@
+/* Layout de la page */
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--background);
+}
+
+.container-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.tile {
+    margin: 1px;
+    width: var(--tile-size);
+    height: var(--tile-size);
+
+    /* border: 1px solid black; */
+}
+.color1 {
+    background-color: var(--predefined_1);
+}
+
+.color2 {
+    background-color: var(--predefined_4);
+}

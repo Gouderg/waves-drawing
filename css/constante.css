@@ -1,0 +1,11 @@
+:root {
+    --background: #bbd2e1;
+
+    --predefined_1: #c1946a;
+    --predefined_2: #405d27;
+    --predefined_3: #3e4444;
+    --predefined_4: #82b74b;
+
+
+    --tile-size: 32px;
+}
