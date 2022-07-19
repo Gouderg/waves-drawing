@@ -1,11 +1,13 @@
 :root {
     --background: #bbd2e1;
+    --background-2: #FADEBC;
 
-    --predefined_1: #c1946a;
-    --predefined_2: #405d27;
-    --predefined_3: #3e4444;
-    --predefined_4: #82b74b;
+    --predefined_1: #fbefcc;
+    --predefined_2: #f9ccac;
+    --predefined_3: #f4a688;
+    --predefined_4: #e0876a;
 
+    --forbidden: #FFFFFF;
 
     --tile-size: 32px;
 }

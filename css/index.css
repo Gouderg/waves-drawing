@@ -1,5 +1,4 @@
 /* Layout de la page */
-
 body {
     display: flex;
     flex-direction: column;
@@ -27,13 +26,44 @@ body {
     margin: 1px;
     width: var(--tile-size);
     height: var(--tile-size);
-
-    /* border: 1px solid black; */
+    text-align: center;
 }
-.color1 {
+
+
+.container-shape, .container-color {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.form-container {
     background-color: var(--predefined_1);
+    margin: 1px;
+
 }
 
-.color2 {
-    background-color: var(--predefined_4);
+.shape {
+    width: var(--tile-size);
+    height: var(--tile-size);
+    background-color: var(--predefined_2);
 }
+
+/* Shape. */
+.triangle { clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+.square { clip-path: polygon(50% 0, 100% 0%, 100% 50%, 50% 50%); }
+.rectangle { clip-path: polygon(50% 0, 100% 0%, 100% 100%, 50% 100%); }
+.quarter-circle { clip-path: circle(50% at 100% 0);}
+.semi-circle { clip-path: circle(50% at 100% 50%);}
+.star-4 { clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0% 50%);}
+.circle { clip-path: circle(50% at 50% 50%);}
+
+/* Rotation. */
+.rotate90 {transform: rotate(90deg);}
+.rotate180 {transform: rotate(180deg);}
+.rotate270 {transform: rotate(270deg);}
+
+/* Color. */
+.color { background-color: var(--background-2); }
+.color-forbidden { background-color: var(--forbidden); }
+.color1 { background-color: var(--predefined_1) !important; }
+.color2 { background-color: var(--predefined_2); }
