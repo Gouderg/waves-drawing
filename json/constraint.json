@@ -1,9 +1,9 @@
 {
     "tile_1": {
         "UPPER": 1,
-        "RIGHT": 2,
-        "DOWN": 3,
-        "LEFT": 2,
+        "RIGHT": 3,
+        "DOWN": 2,
+        "LEFT": 3,
         "is_rotated": true
     }, 
     

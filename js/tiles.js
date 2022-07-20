@@ -20,23 +20,21 @@ class Tiles {
     }
 
     findNeighbours (tiles) {
-        for (let j = 0; j < tiles.length; j++) {
-            if (tiles[j].id !== this.id) {
+        for (const key in tiles) {
+            let a = tiles[key].id;
 
-                // UP.
-                if (this.UPPER === tiles[j].DOWN) {this.neighbours["UPPER"].push(tiles[j].id);}
+            // UP.
+            if (this.UPPER === tiles[key].DOWN) {this.neighbours["UPPER"].push(a);}
 
-                // RIGHT.
-                if (this.RIGHT === tiles[j].LEFT) {this.neighbours["RIGHT"].push(tiles[j].id);}
+            // RIGHT.
+            if (this.RIGHT === tiles[key].LEFT) {this.neighbours["RIGHT"].push(a);}
 
-                // DOWN.
-                if (this.DOWN === tiles[j].UPPER) {this.neighbours["DOWN"].push(tiles[j].id);}
+            // DOWN.
+            if (this.DOWN === tiles[key].UPPER) {this.neighbours["DOWN"].push(a);}
 
-                // LEFT.
-                if (this.LEFT === tiles[j].RIGHT) {this.neighbours["LEFT"].push(tiles[j].id);}
-
-            }
+            // LEFT.
+            if (this.LEFT === tiles[key].RIGHT) {this.neighbours["LEFT"].push(a);}
         }
     }
-  }
+}
   

@@ -17,6 +17,13 @@ body {
     flex-direction: column;
 }
 
+.grid-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+}
+
 .row {
     display: flex;
     flex-direction: row;
