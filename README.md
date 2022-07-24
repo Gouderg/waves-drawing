@@ -11,3 +11,9 @@ Draw with some predefined tiles and the wave collapse function algorithm
 ## Gestion des contraintes.
 
 - Comment générer des contraintes facilement
+
+## New features.
+
+- Change dataset
+- Add variable validation
+- Change Entropy 

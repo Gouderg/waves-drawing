@@ -1,0 +1,41 @@
+{
+    "tile_20": {
+        "UPPER": 1,
+        "RIGHT": 1,
+        "DOWN": 0,
+        "LEFT": 1,
+        "is_rotated": true
+    },
+
+    "tile_23": {
+        "UPPER": 1,
+        "RIGHT": 0,
+        "DOWN": 0,
+        "LEFT": 1,
+        "is_rotated": true
+    },
+
+    "tile_17": {
+        "UPPER": 0,
+        "RIGHT": 0,
+        "DOWN": 0,
+        "LEFT": 0,
+        "is_rotated": false
+    },
+
+    "tile_21": {
+        "UPPER": 0,
+        "RIGHT": 1,
+        "DOWN": 0,
+        "LEFT": 1,
+        "is_rotated": false
+    },
+
+    "tile_22": {
+        "UPPER": 1,
+        "RIGHT": 0,
+        "DOWN": 1,
+        "LEFT": 0,
+        "is_rotated": false
+    }
+}
