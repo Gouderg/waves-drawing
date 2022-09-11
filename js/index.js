@@ -1,15 +1,19 @@
 'use strict';
-const nbTiles = 30;
+
+const nbTiles = 20;
 
 const coef = 1000;
 var grid = [];
 var buttonDraw = document.getElementById('button-draw');
 var buttonReset = document.getElementById('button-reset');
 var buttonNext = document.getElementById('button-next');
+var buttonPrev = document.getElementById('button-prev');
+
 var error = document.getElementById('error');
 
 var tiles = {};
 var idtiles = [];
+var historique = [];
 
 // Fetch data from json.
 fetch("./json/constraint4.json")
@@ -75,7 +79,6 @@ function initgrid() {
     }
 
     drawgrid();
-    // waveFunctionCollapsed();
 }
 
 
@@ -89,7 +92,7 @@ function drawgrid() {
 
             // Superposition state.
             if (grid[i][j].is_collapse === 1) {
-                row += "<div class='tile color'>"+grid[i][j].entropy+"</div>";
+                row += "<div class='tile color'>"+grid[i][j].entropy.toFixed(1)+"</div>";
             } 
             
             // Valide state.
@@ -100,10 +103,9 @@ function drawgrid() {
             else if (grid[i][j].is_collapse === -2) {
                 row += '<div class="form-container"><div class="shape cross"></div></div>'
             }
-            
             // Forbidden state.
             else {
-                row += "<div class='tile color-forbidden'>&nbsp;</div>";
+                row += '<div class="form-container"><div class="shape color-forbidden"></div></div>';
             }
         }
         row += "</div>";
@@ -133,27 +135,84 @@ function waveFunctionCollapsed() {
         }
     }
     
-    // If all tiles is stable
+    // If all tiles is stable.
     if (lowest === 100000 && pos.length === 0) return 0;
     
     // If lowest entropy is not alone.
-    if (pos.length > 1) {
-        pos = pos[Math.floor(Math.random() * pos.length)];
-    } else {
-        pos = pos[0];
-    }
+    pos = (pos.length > 1) ? pos[Math.floor(Math.random() * pos.length)] : pos[0];
+
     let i = pos[0];
     let j = pos[1];
 
-    console.log('Tile : ', i, j);
-    
     // Now we have the position of the lowest entropy, we need to choose the value.
     grid[i][j].tiles = grid[i][j].tiles[Math.floor(Math.random() * grid[i][j].tiles.length)];
     grid[i][j].is_collapse = 0;
     grid[i][j].entropy = 1;
     
+    // Add the tile to the historique.
+    historique.push([i,j]);
     
-    // Propagation loop.
+    // Run propagation on all collapsed tiles.
+    propagation(i, j);
+
+    // Update collapse.
+    for (let i = 0; i < nbTiles; i++) {
+        for (let j = 0; j < nbTiles; j++) {
+            if (grid[i][j].entropy === 1 && Array.isArray(grid[i][j].tiles)) {
+                if (isValid(i, j)) {
+                    grid[i][j].tiles = grid[i][j].tiles[0]
+                    grid[i][j].is_collapse = 0;
+                } else {
+                    grid[i][j].entropy = 0; 
+                    grid[i][j].is_collapse = -2;
+                }
+            } else if (grid[i][j].entropy === 0 && grid[i][j].is_collapse === 1) {
+                grid[i][j].is_collapse = -1;
+            }
+        }
+    }
+    
+    drawgrid();
+    return 1;
+}
+
+
+// Check if tiles around are collapsed and the value match.
+function isValid(i, j) {
+
+    // Up.
+    if (i - 1 >= 0 && grid[i-1][j].is_collapse === 0 && tiles[grid[i][j].tiles[0]].UPPER !== tiles[grid[i-1][j].tiles].DOWN) {
+        return 0;
+    }
+    // Right.
+    if (j + 1 < nbTiles && grid[i][j+1].is_collapse === 0 && tiles[grid[i][j].tiles[0]].RIGHT !== tiles[grid[i][j+1].tiles].LEFT) {
+        return 0;
+    } 
+    // Down.
+    if (i + 1 < nbTiles && grid[i+1][j].is_collapse === 0 && tiles[grid[i][j].tiles[0]].DOWN !== tiles[grid[i+1][j].tiles].UPPER) {
+        return 0;
+    }
+    // Left.
+    if (j - 1 >= 0 && grid[i][j-1].is_collapse === 0 && tiles[grid[i][j].tiles[0]].LEFT !== tiles[grid[i][j-1].tiles].RIGHT) {
+        return 0;
+    }
+
+    return 1;
+}
+
+// Update entropy.  
+function updateEntropy() {
+    for (let i = 0; i < nbTiles; i++) {
+        for (let j = 0; j < nbTiles; j++) {
+            if (grid[i][j].is_collapse === 1) {
+                grid[i][j].entropy = grid[i][j].tiles.length;
+            }
+        }
+    }
+}
+
+// Propagation function.
+function propagation(i, j) {
     let fifo = [];
     let already_visited = [i * coef + j];
     
@@ -185,10 +244,8 @@ function waveFunctionCollapsed() {
         grid[i][j-1].tiles = grid[i][j-1].tiles.filter(value => cp.includes(value))
     }
     
-    updateEntropy();
     
     while (fifo.length > 0) {
-        // console.log(fifo, already_visited);
         let pos_raw = fifo.shift();
         let pos_i = Math.floor(pos_raw/coef);
         let pos_j = pos_raw % coef;
@@ -196,10 +253,10 @@ function waveFunctionCollapsed() {
         already_visited.push(pos_raw);
         
         // Look if coordinate are valide.
-        if (pos_i < 0 || pos_i >= nbTiles || pos_j < 0 || pos_j >= nbTiles || grid[pos_i][pos_j].is_collapse < 1) continue;
+        if (pos_i < 0 || pos_i >= nbTiles || pos_j < 0 || pos_j >= nbTiles || grid[pos_i][pos_j].is_collapse < 1 || grid[pos_i][pos_j].tiles.length === 0) continue;
         
-        // For each direction, find all neighbours of all case (intersection and it in )
-        // UP.
+        // For each direction, find all neighbours of all case.
+        // UP - Valid coordinate, not visited and not collapse.
         if (pos_i - 1 >= 0 && !already_visited.includes((pos_i - 1) * coef + pos_j) && grid[pos_i-1][pos_j].is_collapse === 1) {
             let is_pos = []
             for (const key in grid[pos_i][pos_j].tiles) {
@@ -209,7 +266,6 @@ function waveFunctionCollapsed() {
             is_pos = is_pos.filter((v, i, a) => a.indexOf(v) === i);
             
             // Intersection between values.
-            // console.log(grid[pos_i-1][pos_j].tiles, pos_i-1, pos_j)
             grid[pos_i-1][pos_j].tiles = grid[pos_i-1][pos_j].tiles.filter(value => is_pos.includes(value));
 
             if (!fifo.includes((pos_i-1) * coef + pos_j)) {
@@ -217,10 +273,9 @@ function waveFunctionCollapsed() {
             }
             
         }
-
         
         // Right.
-        if (pos_j + 1 < nbTiles && !already_visited.includes(pos_i * coef + pos_j + 1) && grid[pos_i][pos_j+1].is_collapse === 1) {
+        if (pos_j + 1 < nbTiles && !already_visited.includes(pos_i * coef + (pos_j + 1)) && grid[pos_i][pos_j+1].is_collapse === 1) {
             let is_pos = []
             for (const key in grid[pos_i][pos_j].tiles) {
                 is_pos = is_pos.concat(tiles[grid[pos_i][pos_j].tiles[key]].neighbours.RIGHT);
@@ -241,7 +296,7 @@ function waveFunctionCollapsed() {
         if (pos_i + 1 < nbTiles && !already_visited.includes((pos_i + 1) * coef + pos_j) && grid[pos_i+1][pos_j].is_collapse === 1) {
             let is_pos = []
             for (const key in grid[pos_i][pos_j].tiles) {
-                is_pos = is_pos.concat(tiles[grid[pos_i][pos_j].tiles[key]].neighbours.UPPER);
+                is_pos = is_pos.concat(tiles[grid[pos_i][pos_j].tiles[key]].neighbours.DOWN);
             }
             // Remove all duplicates.
             is_pos = is_pos.filter((v, i, a) => a.indexOf(v) === i);
@@ -258,14 +313,13 @@ function waveFunctionCollapsed() {
         if (pos_j - 1 >= 0 && !already_visited.includes(pos_i * coef + pos_j - 1) && grid[pos_i][pos_j-1].is_collapse === 1) {
             let is_pos = []
             for (const key in grid[pos_i][pos_j].tiles) {
-                is_pos = is_pos.concat(tiles[grid[pos_i][pos_j].tiles[key]].neighbours.RIGHT);
+                is_pos = is_pos.concat(tiles[grid[pos_i][pos_j].tiles[key]].neighbours.LEFT);
             }
             // Remove all duplicates.
             is_pos = is_pos.filter((v, i, a) => a.indexOf(v) === i);
             
             // Intersection between values.
             grid[pos_i][pos_j-1].tiles = grid[pos_i][pos_j-1].tiles.filter(value => is_pos.includes(value));
-            
             
             if (!fifo.includes(pos_i * coef + (pos_j-1))) {
                 fifo.push(pos_i * coef + (pos_j-1))
@@ -274,50 +328,40 @@ function waveFunctionCollapsed() {
         
     }
     updateEntropy();    
-    
-    // Update collapse 
-    for (let i = 0; i < nbTiles; i++) {
-        for (let j = 0; j < nbTiles; j++) {
-            if (grid[i][j].entropy === 1 && Array.isArray(grid[i][j].tiles)) {
-                if (isValid(i, j)) {
-                    grid[i][j].tiles = grid[i][j].tiles[0]
-                    grid[i][j].is_collapse = 0;
-                } else {
-                    grid[i][j].is_collapse = -2;
-                }
-            } else if (grid[i][j].entropy === 0) {
-                grid[i][j].is_collapse = -1;
-            }
-        }
-    }
-    
-    drawgrid();
-    return 1;
 }
 
-function isValid(i, j) {
+function prev() {
 
-    // Up.
-    if (i - 1 >= 0 && grid[i-1][j].is_collapse === 0 && tiles[grid[i][j].tiles[0]].neighbours.UPPER !== tiles[grid[i-1][j].tiles].neighbours.DOWN) return 0;
-    // Right.
-    if (j + 1 < nbTiles && grid[i][j+1].is_collapse === 0 && tiles[grid[i][j].tiles[0]].neighbours.RIGHT !== tiles[grid[i][j+1].tiles].neighbours.LEFT) return 0;
-    // Down.
-    if (i + 1 < nbTiles && grid[i+1][j].is_collapse === 0 && tiles[grid[i][j].tiles[0]].neighbours.DOWN !== tiles[grid[i+1][j].tiles].neighbours.UPPER) return 0;
-    // Left.
-    if (j - 1 >= 0 && grid[i][j-1].is_collapse === 0 && tiles[grid[i][j].tiles[0]].neighbours.LEFT !== tiles[grid[i][j-1].tiles].neighbours.RIGHT) return 0;
+    // If no move was played.
+    if (historique.length === 0) return;
 
-    return 1;
-}
+    // Remove last plqy from historique.
+    let last_pos = historique.pop()
+    
+    // Say isn't collapse.
+    grid[last_pos[0]][last_pos[1]].is_collapse = 1;
 
-// Update entropy.  
-function updateEntropy() {
-    for (let i = 0; i < nbTiles; i++) {
-        for (let j = 0; j < nbTiles; j++) {
+    // Restore all entropy and possibilities.
+    for (let i = 0; i < nbTiles; i ++) {
+        for (let j = 0; j < nbTiles; j ++) {
             if (grid[i][j].is_collapse === 1) {
-                grid[i][j].entropy = grid[i][j].tiles.length
+                grid[i][j].tiles = JSON.parse(JSON.stringify(idtiles));
+                grid[i][j].entropy = idtiles.length;
             }
         }
     }
+
+    // Run propagation on all collapsed tiles.
+    if (historique.length > 0 ) {
+        for (let k = historique.length - 1; k >= 0 ; k -= 1) {
+            propagation(historique[k][0], historique[k][1]);
+        }
+    } else {
+        grid = []
+        initgrid();
+    }
+
+    drawgrid();
 }
 
 function run() {
@@ -329,7 +373,11 @@ function run() {
 
 // Wait event.
 buttonDraw.addEventListener('click', (e) => {
-    run()
+    run();
+});
+
+buttonPrev.addEventListener('click', (e) => {
+    prev();
 });
 
 buttonNext.addEventListener('click', (e) => {
