@@ -27,56 +27,62 @@
             <button class="button" id="button-next">Next</button>
         </div>
         <div class="grid-slider">
-            <input type="range" id="slider" name="slider" min="100" max="2000" step="100">
+            <input type="range" id="slider" name="slider" min="0" max="1000" step="10">
         </div>
     </section>
     
     
     <section id="menu" class="menu">
         <h1>Shape</h1>
+        <div class="menu-row">
+            <input type="radio" name="constraint" id="constraint">
+            <div class="container-shape">
+                <div id='tile_1_0' class="form-container"><div class="shape triangle"></div></div>
+                <div id='tile_1_1' class="form-container rotate90"><div class="shape triangle"></div></div>
+                <div id='tile_1_2' class="form-container rotate180"><div class="shape triangle"></div></div>
+                <div id='tile_1_3' class="form-container rotate270"><div class="shape triangle"></div></div>
+                <div id="tile_2" class="form-container"><div class="shape square"></div></div>
+                <div id="tile_3" class="form-container rotate90"><div class="shape square"></div></div>
+                <div id="tile_4" class="form-container rotate180"><div class="shape square"></div></div>
+                <div id="tile_5" class="form-container rotate270"><div class="shape square"></div></div>
+                <div id="tile_6" class="form-container"><div class="shape rectangle"></div></div>
+                <div id="tile_7" class="form-container rotate90"><div class="shape rectangle"></div></div>
+                <div id="tile_8" class="form-container rotate180"><div class="shape rectangle"></div></div>
+                <div id="tile_9" class="form-container rotate270"><div class="shape rectangle"></div></div>
+                <div id="tile_10_0" class="form-container"><div class="shape semi-circle"></div></div>
+                <div id="tile_10_1" class="form-container rotate90"><div class="shape semi-circle"></div></div>
+                <div id="tile_10_2" class="form-container rotate180"><div class="shape semi-circle"></div></div>
+                <div id="tile_10_3" class="form-container rotate270"><div class="shape semi-circle"></div></div>
+                <div id="tile_11" class="form-container"><div class="shape quarter-circle"></div></div>
+                <div id="tile_12" class="form-container rotate180"><div class="shape quarter-circle"></div></div>
+                <div id="tile_13" class="form-container rotate270"><div class="shape quarter-circle"></div></div>
+                <div id="tile_14" class="form-container rotate90"><div class="shape quarter-circle"></div></div>
+                <div id="tile_15" class="form-container"><div class="shape star-4"></div></div>
+            </div>
+        </div>
+        <div class="menu-row">
+            <input type="radio" name="constraint" id="constraint4">
+            <div class="container-shape">
+                <div id="tile_17" class="form-container"><div class="color1 shape"></div></div>
+                <div id='tile_20_0' class="form-container"><div class="shape tri"></div></div>
+                <div id='tile_20_1' class="form-container rotate90"><div class="shape tri"></div></div>
+                <div id='tile_20_2' class="form-container rotate180"><div class="shape tri"></div></div>
+                <div id='tile_20_3' class="form-container rotate270"><div class="shape tri"></div></div>
+                <div id='tile_21' class="form-container"><div class="shape bar"></div></div>
+                <div id='tile_22' class="form-container rotate90"><div class="shape bar"></div></div>
+                <div id='tile_23_0' class="form-container"><div class="shape angle"></div></div>
+                <div id='tile_23_1' class="form-container rotate90"><div class="shape angle"></div></div>
+                <div id='tile_23_2' class="form-container rotate180"><div class="shape angle"></div></div>
+                <div id='tile_23_3' class="form-container rotate270"><div class="shape angle"></div></div>
+                <div id='tile_24' class="form-container"><div class="shape cross2"></div></div>
+            </div>
+        </div>
+
         <div class="container-shape">
-            <div id='tile_1_0' class="form-container"><div class="shape triangle"></div></div>
-            <div id='tile_1_1' class="form-container rotate90"><div class="shape triangle"></div></div>
-            <div id='tile_1_2' class="form-container rotate180"><div class="shape triangle"></div></div>
-            <div id='tile_1_3' class="form-container rotate270"><div class="shape triangle"></div></div>
-            <div id="tile_2" class="form-container"><div class="shape square"></div></div>
-            <div id="tile_3" class="form-container rotate90"><div class="shape square"></div></div>
-            <div id="tile_4" class="form-container rotate180"><div class="shape square"></div></div>
-            <div id="tile_5" class="form-container rotate270"><div class="shape square"></div></div>
-            <div id="tile_6" class="form-container"><div class="shape rectangle"></div></div>
-            <div id="tile_7" class="form-container rotate90"><div class="shape rectangle"></div></div>
-            <div id="tile_8" class="form-container rotate180"><div class="shape rectangle"></div></div>
-            <div id="tile_9" class="form-container rotate270"><div class="shape rectangle"></div></div>
-            <div id="tile_10_0" class="form-container"><div class="shape semi-circle"></div></div>
-            <div id="tile_10_1" class="form-container rotate90"><div class="shape semi-circle"></div></div>
-            <div id="tile_10_2" class="form-container rotate180"><div class="shape semi-circle"></div></div>
-            <div id="tile_10_3" class="form-container rotate270"><div class="shape semi-circle"></div></div>
-            <div id="tile_11" class="form-container"><div class="shape quarter-circle"></div></div>
-            <div id="tile_12" class="form-container rotate180"><div class="shape quarter-circle"></div></div>
-            <div id="tile_13" class="form-container rotate270"><div class="shape quarter-circle"></div></div>
-            <div id="tile_14" class="form-container rotate90"><div class="shape quarter-circle"></div></div>
-            <div id="tile_15" class="form-container"><div class="shape star-4"></div></div>
+            <div class="form-container"><div class="shape cross"></div></div>
             <div id="tile_16" class="form-container"><div class="shape"></div></div>
             <div id="tile_17" class="form-container"><div class="color1 shape"></div></div>
         </div>
-        <div class="container-shape">
-            <div id="tile_17" class="form-container"><div class="color1 shape"></div></div>
-            <div id='tile_20_0' class="form-container"><div class="shape tri"></div></div>
-            <div id='tile_20_1' class="form-container rotate90"><div class="shape tri"></div></div>
-            <div id='tile_20_2' class="form-container rotate180"><div class="shape tri"></div></div>
-            <div id='tile_20_3' class="form-container rotate270"><div class="shape tri"></div></div>
-            <div id='tile_21' class="form-container"><div class="shape bar"></div></div>
-            <div id='tile_22' class="form-container rotate90"><div class="shape bar"></div></div>
-            <div id='tile_23_0' class="form-container"><div class="shape angle"></div></div>
-            <div id='tile_23_1' class="form-container rotate90"><div class="shape angle"></div></div>
-            <div id='tile_23_2' class="form-container rotate180"><div class="shape angle"></div></div>
-            <div id='tile_23_3' class="form-container rotate270"><div class="shape angle"></div></div>
-            <div id='tile_24' class="form-container"><div class="shape cross2"></div></div>
-            <!-- <div class="form-container"><div class="shape cross"></div></div> -->
-
-
-        </div>
-
         <h1>Color</h1>
         <div class="container-color">   
             <div class="shape circle color1"></div>

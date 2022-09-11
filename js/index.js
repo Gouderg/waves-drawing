@@ -7,6 +7,7 @@ var buttonNext = document.getElementById('button-next');
 var buttonPrev = document.getElementById('button-prev');
 var error = document.getElementById('error');
 var slider = document.getElementById('slider');
+var radios = document.querySelectorAll('input[type=radio][name="constraint"]');
 
 // Constantes.
 const nbTiles = 10;
@@ -15,7 +16,6 @@ var millisecTime = slider.value;
 var idInter;
 var isRun = 1;
 
-
 // Variables.
 var grid = [];
 var tiles = {};
@@ -23,7 +23,7 @@ var idtiles = [];
 var historique = [];
 
 // Fetch data from json.
-fetch("./json/constraint4.json")
+fetch("./json/"+document.querySelector('input[name="constraint"]:checked').id+".json")
     .then(response => response.json())
     .then(jsondata => getConstraint(jsondata))
     .catch(err => error.innerHTML = "Impossible de charger le fichier des contraintes");
@@ -407,4 +407,10 @@ slider.addEventListener('change', (e) => {
     millisecTime = slider.value;
     clearInterval(idInter);
     run();
+});
+
+Array.prototype.forEach.call(radios, function(radio) {
+   radio.addEventListener('change', () => {
+        window.location.reload();
+   });
 });

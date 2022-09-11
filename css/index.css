@@ -36,11 +36,17 @@ body {
     text-align: center;
 }
 
+.menu-row {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+}
 
 .container-shape, .container-color {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .form-container {
