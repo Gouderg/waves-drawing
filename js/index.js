@@ -1,16 +1,23 @@
 'use strict';
 
-const nbTiles = 20;
-
-const coef = 1000;
-var grid = [];
+// HTML DOM.
 var buttonDraw = document.getElementById('button-draw');
 var buttonReset = document.getElementById('button-reset');
 var buttonNext = document.getElementById('button-next');
 var buttonPrev = document.getElementById('button-prev');
-
 var error = document.getElementById('error');
+var slider = document.getElementById('slider');
 
+// Constantes.
+const nbTiles = 10;
+const coef = 1000;
+var millisecTime = slider.value;
+var idInter;
+var isRun = 1;
+
+
+// Variables.
+var grid = [];
 var tiles = {};
 var idtiles = [];
 var historique = [];
@@ -365,11 +372,19 @@ function prev() {
 }
 
 function run() {
-    let isRun = 1;
-    while (isRun) {
+
+    idInter = setInterval( () => {
+        // Update.
         isRun = waveFunctionCollapsed();
-    }
+
+        // Clear Interval if grid is collapse.
+        if (isRun === 0) {
+            clearInterval(idInter);
+        }
+    }, millisecTime);
+
 }
+
 
 // Wait event.
 buttonDraw.addEventListener('click', (e) => {
@@ -386,4 +401,10 @@ buttonNext.addEventListener('click', (e) => {
 
 buttonReset.addEventListener('click', (e) => {
     window.location.reload();
+});
+
+slider.addEventListener('change', (e) => {
+    millisecTime = slider.value;
+    clearInterval(idInter);
+    run();
 });
